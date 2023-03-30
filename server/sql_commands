@@ -1,0 +1,90 @@
+DROP TABLE IF EXISTS customer, product, cart, cart_item, orders, payments;
+
+CREATE TABLE customer (
+  id INTEGER PRIMARY KEY,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  email VARCHAR(50) UNIQUE NOT NULL,
+  address VARCHAR(50),
+  phone VARCHAR(13)
+);
+
+INSERT INTO customer (id, first_name, last_name, email, address, phone )
+VALUES (1, 'Mark', 'Mac', 'mark@gmail.com', '123 1st St', '1111111111'),
+(2, 'John', 'Mac', 'john@gmail.com', '222 2nd St', '2222222222'),
+(3, 'Steve', 'Mac', 'steve@gmail.com', '333 3st St', '(333)333-3333'),
+(4, 'Allen', 'Mac', 'allen@gmail.com', '444 4th St', '(444)444-4444'),
+(5, 'Dave', 'Mac', 'dave@gmail.com', '555 5th St', '(555)555-5555')
+;
+        
+
+CREATE TABLE product (
+	id INTEGER PRIMARY KEY,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(50),
+  price MONEY NOT NULL,
+  stock INTEGER 
+);
+
+INSERT INTO product(id, name, description, price, stock)
+VALUES (1, 'Black Diamond Skis', 'Best Resort Skis', 599, 12),
+(2, 'Volki Skis', 'Best DownHill Skis', 799, 8),
+(3, 'Black Crow Skis', 'Best Back-Country Skis', 1199, 5),
+(4, 'Head Skis', 'Cheapest Resort Skis', 399, 18),
+(5, 'Blizzard Skis', 'Best Powder Skis', 899, 9)
+;
+
+CREATE TABLE cart (
+  id INTEGER PRIMARY KEY,
+  customer_id INTEGER REFERENCES customer(id),
+  created_on DATE NOT NULL
+);
+
+INSERT INTO cart (id, customer_id, created_on)
+VALUES (1, 1, CURRENT_DATE),
+(2, 2,'2023-10-05')
+;
+
+
+CREATE TABLE cart_item(
+  cart_id INTEGER REFERENCES cart(id),
+  product_id INTEGER REFERENCES product(id),
+  quantity INTEGER NOT NULL,
+  product_price MONEY NOT NULL,
+  total MONEY NOT NULL,
+  PRIMARY KEY (cart_id, product_id)
+);
+
+INSERT INTO cart_item (cart_id, product_id, quantity, product_price, total)
+VALUES (1, 1, 1, 599, 599),
+(2, 2, 2, 799, 1598),
+(2, 3, 3, 1199, 3597)
+;
+
+
+CREATE TABLE orders(
+  id INTEGER PRIMARY KEY,
+  cart_id INTEGER REFERENCES cart(id),
+  order_date DATE NOT NULL,
+  order_total MONEY NOT NULL,
+  status VARCHAR(50)NOT NULL
+);
+
+INSERT INTO orders (id, cart_id, order_date, order_total, status)
+VALUES (1, 1, CURRENT_DATE, 599, 'Paid in Full');
+;
+
+
+CREATE TABLE payments(
+  id INTEGER PRIMARY KEY,
+  order_id INTEGER REFERENCES orders(id),
+  payment_date DATE NOT NULL,
+  paid MONEY NOT NULL,
+  payment_method VARCHAR(50) NOT NULL
+);	
+
+INSERT INTO payments (id, order_id, payment_date, paid, payment_method)
+VALUES (1, 1, CURRENT_DATE, 599, 'Visa')
+;
+  
+  
