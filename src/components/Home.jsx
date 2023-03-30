@@ -1,8 +1,12 @@
 import React from "react";
 
 function Home() {
-  //hero
-  //shop all
+
+  ///useEffect -> fetch from endpoint
+  // setState(result) 
+  //read below 
+  //maybe need useContext for auth?
+
   return (
     <>
       <section id="hero" className="relative">
