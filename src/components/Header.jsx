@@ -5,9 +5,9 @@ import { Outlet, Link } from "react-router-dom";
 const Header = () => {
   return (
     <>
-      <header className="bg-[#342e32] flex justify-between items-center text-slate-100 font-bodo">
-        <div id="logo" className="flex items-center justify-start pl-5">
-          <div id="tag" className="h-12 w-8 bg-key"></div>
+      <header className="bg-[#342e32] flex justify-between items-center text-slate-100 font-bodo px-5">
+        <div id="logo" className="flex items-center justify-start ">
+          <div id="tag" className="h-12 w-8 bg-paleKey"></div>
           <div id="text " className="h-full pl-4 font-semibold 	">
             <Link to='/' >SKI SALE</Link>
             <p className="text-[10px] text-[#866150] uppercase">Where everything is always on Sale!</p>
@@ -15,7 +15,7 @@ const Header = () => {
         </div>
         <nav>
           <div id="links">
-            <ul className="flex gap-5 pr-3 uppercase text-xs text-slate-400">
+            <ul className="flex gap-5  uppercase text-xs text-slate-400">
         
               <li><Link to='/skis' >Skis</Link></li>
               <li><Link to='/boots' >Boots</Link></li>

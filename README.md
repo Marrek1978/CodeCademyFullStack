@@ -18,12 +18,30 @@ Once the app is running locally, you can access it in a browser at `http://local
 
 ## Resources
 
-Server
+on the Server
 Express
+Passport
+Morgan
+Cors
+Express-session
+
+PostgreSQL DB
 
 
-React Application
-React Router - https://reactrouter.com/
+React Application via Vite Js.
+Hooks - useState, useEffect, useContext
+react-loader-spinner   https://mhnpd.github.io/react-loader-spinner/docs/intro
+??auth??
+
+- [React Router]( https://reactrouter.com/)
 - [REST Architecture](https://www.codecademy.com/articles/what-is-rest)
 - [Using pgAdmin](https://www.pgadmin.org/docs/pgadmin4/development/getting_started.html)
 - [React Documentation](https://reactjs.org/docs/getting-started.html)
+
+
+Website Colors
+white
+Header/Sections bg - #342e32
+light key - #d0694f  logo, link.
+brown - #825241
+key/buttons - #??

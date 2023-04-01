@@ -4,9 +4,13 @@ export default {
   theme: {
     extend: {
       colors:{
-        'key': '#cf684f',
-        'brown': '#835443',
-        'red': '#611301'
+        'backgroundClr': '#342e32',
+        'red': '#611301',
+        'redBrown':  '#61434A',
+        'lightBrown': '#8a5341',
+        'brightRed': '#BB5051',
+        'key': '#EA580C',
+        'paleKey': '#cf684f',
       },
       fontFamily: {
         bodo: ["Libre Bodoni"],

@@ -9,24 +9,24 @@ module.exports = (app) => {
     res.status(200).json(req.results);
   } );
   
-  app.param("id", carts.getCartId);
+  app.param("cartId", carts.getCartId);
   
   //* basic authentication only, not matching user id to own profile
-  app.get('/cart/:id', basicAuthentication, (req, res, next) => {
+  app.get('/cart/:cartId', basicAuthentication, (req, res, next) => {
     res.status(200).json(req.results);
   } );
   
   //* only 1 cart per customer
-  app.post('/cart/:productId', [basicAuthentication, carts.postProductToCart] , (req, res, next) => {
+  app.post('/cart/:cartId', [basicAuthentication, carts.postProductToCart] , (req, res, next) => {
     res.status(200).send('in cart/:product ida nd user id is: ' );
   })
 
-  app.get("/cart/:id/checkout", [basicAuthentication, carts.getProductsInCart] , (req, res, next) => {
+  app.get("/cart/:cartId/checkout", [basicAuthentication, carts.getProductsInCart] , (req, res, next) => {
     console.log( ' in checkout and req.products is ', req.products)
     res.status(200).send(req.products);
   });
 
-  app.post("/cart/:id/checkout", [basicAuthentication, carts.payment] , (req, res, next) => {
+  app.post("/cart/:cartId/checkout", [basicAuthentication, carts.payment] , (req, res, next) => {
     console.log( ' in checkout')
     res.status(200).send("Your order has been successfully created and your payment has been received");
   });

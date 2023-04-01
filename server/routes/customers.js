@@ -4,7 +4,7 @@ const { basicAuthentication, matchIdAuthentication} = require('./authMiddlewares
 module.exports = (app, passport) => {
 
   //* ROUTES
-  app.param("id", customer.getCustomerId);
+  app.param("customerId", customer.getCustomerId);
 
   app.get("/customers", customer.getCustomers, (req, res, next) => {
     // console.log('session id is ', req.session.id);
@@ -27,7 +27,7 @@ module.exports = (app, passport) => {
     }
   );
 
-  app.get("/customer/:id", matchIdAuthentication, (req, res, next) => {
+  app.get("/customer/:customerId", matchIdAuthentication, (req, res, next) => {
     if (req.results) {
       res.status(200).json(req.results);
     } else {
@@ -36,7 +36,7 @@ module.exports = (app, passport) => {
   });
 
   app.put(
-    "/customer/:id",
+    "/customer/:customerId",
     [basicAuthentication, customer.updateCustomerById],
     (req, res, next) => {
       res.status(200).json("Customer was updated");
@@ -44,7 +44,7 @@ module.exports = (app, passport) => {
   );
 
   app.delete(
-    "/customer/:id",
+    "/customer/:customerId",
     [basicAuthentication, customer.deleteCustomerById],
     (req, res, next) => {
       res.status(200).json(`User deleted with Id: ${req.results.id}`);

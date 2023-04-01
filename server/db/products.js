@@ -1,7 +1,7 @@
 const { query } = require("./index.js");
 
 const getProductId = (req, res, next, id) => {
-  // console.log(" in get prod id");
+  
   var onlyNum = /^[0-9]+$/.test(id);
 
   if (onlyNum) {
@@ -17,7 +17,7 @@ const getProductId = (req, res, next, id) => {
           }
 
           if (results === undefined || results.rows?.length === 0) {
-            let error = new Error("Cannot find customer");
+            let error = new Error("Cannot find product");
             next(error);
           } else {
             req.results = results.rows[0];

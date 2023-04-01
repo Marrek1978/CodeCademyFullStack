@@ -9,9 +9,9 @@ module.exports = (app) => {
     res.status(200).json(req.results);
   } );
 
-  app.param("id", products.getProductId);
+  app.param("productId", products.getProductId);
 
-  app.get('/products/:id', (req, res, next) => {
+  app.get('/products/:productId', (req, res, next) => {
     if (req.results) {
       res.status(200).json(req.results);
     } else {
