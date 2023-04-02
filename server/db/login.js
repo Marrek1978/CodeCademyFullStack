@@ -1,10 +1,14 @@
 const { query } = require("./index.js");
 
 const loginByUsername = (req, res, next) => {
+
+  console.log(' in loginByUsername')
   const { username, password } = req.body;
 
   if (!username || !password) {
-    let error = new Error("Both a username and password must be provided");
+    let error = new Error({
+      error: "Both a username and password must be provided",
+    });
     error.status = 400;
     return next(error);
   }
@@ -20,13 +24,13 @@ const loginByUsername = (req, res, next) => {
         }
 
         if (results === undefined || results.rows.length === 0) {
-          let error = new Error("Cannot find username");
+          let error = new Error({error: "Cannot find username"} );
           error.status = 400;
           return next(error);
         }
 
-        if (results.rows[0].pass !== password) {
-          let error = new Error("Passwords do not match");
+        if (results.rows[0].password !== password) {
+          let error = new Error({error:"Passwords do not match"});
           error.status = 400;
           return next(error);
         }
@@ -53,14 +57,16 @@ const loginByUsername = (req, res, next) => {
 };
 
 async function findByUsername(username, done) {
+  console.log('in find by username')
   try {
     const result = await query(
-      `SELECT id, username, pass FROM customer WHERE username = $1`,
+      `SELECT id, username, password FROM customer WHERE username = $1`,
       [username]
     );
 
     if (result.rows?.length) {
       let user = result.rows[0];
+      console.log('return user', user);
       return done(null, user);
     } else {
       console.log("result is null");
@@ -77,7 +83,7 @@ async function findById(id, done) {
     if (result.rows?.length) {
       done(null, result.rows[0]);
     } else {
-      done(new Error("User id " + id + " does not exist"));
+      done(new Error({ error: "User id " + id + " does not exist" }));
     }
   } catch (err) {
     return err;

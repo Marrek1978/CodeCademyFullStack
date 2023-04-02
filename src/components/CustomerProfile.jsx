@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ColorRing } from "react-loader-spinner";
-import { GetAllProducts } from "../api/api";
+import { GetCustomerById } from "../api/api";
 import ProductCard from "./ProductCard";
 import { KeyedButton } from "./Buttons";
+import { useParams } from "react-router-dom";
 
 const spinner = (
   <ColorRing
@@ -16,19 +17,22 @@ const spinner = (
   />
 );
 
-function Home() {
-  const [allProducts, setAllProducts] = useState([]);
+function CustomerProfile(){
+  const { customerId } = useParams();
+  const [currCustomer, setCurrCustomer] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [isAuthed, setIsAuthed] = useState(false);
+
   ///useEffect -> fetch from endpoint
   useEffect(() => {
-    let products;
-    const getAllProducts = async () => {
-      products = await GetAllProducts();
+    let customer;
+    const getCustomerById = async () => {
+      customer = await GetCustomerById();
       setIsLoading(false);
-      console.log("products is ", products);
-      setAllProducts(products);
+      console.log("customer is ", customer);
+      setCurrCustomer(customer);
     };
-    getAllProducts();
+    getCustomerById();
   }, []);
 
   return (
@@ -89,4 +93,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default CustomerProfile;

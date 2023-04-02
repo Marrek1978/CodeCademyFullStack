@@ -12,6 +12,7 @@ import Poles from "./components/Poles.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Cart from "./components/Cart.jsx";
+import CustomerProfile from "./components/CustomerProfile";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Product from './components/Product';
@@ -39,6 +40,7 @@ function App() {
             <Route path="/products/:productId" element={<Product />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/customer/:customerId" element={<CustomerProfile />} />
             <Route path="/cart" element={<Cart />} />
           </Routes>
           <Footer />

@@ -16,12 +16,15 @@ const getCustomers = async (req, res, next) => {
 };
 
 const registerCustomer = async (req, res, next) => {
+  console.log("RegisterCustomer and req.body is " + req.body);
   //?   ---   HAS PARAMS? ---------
   const { username, password, email } = req.body;
+  console.log("username: " + username + " password: " + password);
   if (username === undefined || password === undefined || email === undefined) {
-    let error = new Error(
-      "To enter a new customer, username, password, and email are required"
-    );
+    let error = new Error({
+      error:
+        "To enter a new customer, username, password, and email are required",
+    });
     error.status = 400;
     return next(error);
   }
@@ -29,7 +32,7 @@ const registerCustomer = async (req, res, next) => {
   //?   ---   UNIQUE? ---------
   const usernameExists = await customerServices.checkUsernameExists(username);
   if (usernameExists) {
-    let error = new Error("Username already exists in the database");
+    let error = new Error({ error: "Username already exists in the database" });
     error.status = 409;
     return next(error);
   }
@@ -37,7 +40,7 @@ const registerCustomer = async (req, res, next) => {
   const emailExists = await customerServices.checkEmailExists(email);
   // const emailExists = await checkEmailExists(email);
   if (emailExists) {
-    let error = new Error("Email already exists in the database");
+    let error = new Error({ error: "Email already exists in the database" });
     error.status = 409;
     return next(error);
   }
@@ -46,9 +49,9 @@ const registerCustomer = async (req, res, next) => {
   //?   ---   GET NEW (MAX + 1) ID ---------
   const newCustomerId = await customerServices.newCustomerId();
   if (!newCustomerId) {
-    let error = new Error(
-      "Something went wrong, please try again or contact support"
-    );
+    let error = new Error({
+      error: "Something went wrong, please try again or contact support",
+    });
     error.status = 400;
     return next(error);
   }
@@ -58,12 +61,12 @@ const registerCustomer = async (req, res, next) => {
   const address = req.body.address ? req.body.address : null;
   const phone = req.body.phone ? req.body.phone : null;
 
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(5);
   const hashedPassword = await bcrypt.hash(password, salt);
 
   try {
     query(
-      "INSERT INTO customer (id, username, pass, email, first_name, last_name, address, phone) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+      "INSERT INTO customer (id, username, password, email, first_name, last_name, address, phone) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
       [
         newCustomerId,
         username,
@@ -112,7 +115,7 @@ const getCustomerId = (req, res, next, id) => {
           }
 
           if (results === undefined || results.rows.length === 0) {
-            let error = new Error("Cannot find customer");
+            let error = new Error({ error: "Cannot find customer" });
             next(error);
           } else {
             req.results = results.rows[0];
@@ -124,7 +127,7 @@ const getCustomerId = (req, res, next, id) => {
       next(err);
     }
   } else {
-    let error = new Error("ID must be a number");
+    let error = new Error({ error: "ID must be a number" });
     error.status = 400;
     next(error);
   }
@@ -155,7 +158,7 @@ const updateCustomerById = (req, res, next) => {
         if (results != undefined) {
           next();
         } else {
-          let err = new Error("Customer could not be Updated");
+          let err = new Error({ error: "Customer could not be Updated" });
           err.status = 404;
           next(err);
         }
@@ -184,7 +187,7 @@ const deleteCustomerById = (req, res, next) => {
         if (results != undefined) {
           next();
         } else {
-          let err = new Error("Could not delete customer");
+          let err = new Error({ error: "Could not delete customer" });
           err.status = 404;
           next(err);
         }

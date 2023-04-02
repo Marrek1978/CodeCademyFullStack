@@ -12,18 +12,21 @@ module.exports = (app, passport) => {
   });
 
   app.post("/register", customer.registerCustomer, (req, res, next) => {
-    res.status(201).json({ msg: "User was created " + req.results.username });
+    // res.status(201).redirect("/login");
+    res.status(201).json({registered: true});
+    // res.status(201).json({ userCreated: true, userName: req.results.username });
+    
   });
 
   app.get("/login", (req, res, next) => {
-    res.status(200).send("arrived at login page");
+    res.status(200).send({res: "arrived at login page"});
   });
 
   app.post(
-    "/login",
-    passport.authenticate("local", { failureRedirect: "/login" }),
+    "/login",(req, res, next)=> {console.log('login page rout'), next()},
+    passport.authenticate("local", { failureRedirect: "/customers" }),
     (req, res) => {
-      res.redirect("/customers");
+      res.json({loggedIn: true});
     }
   );
 
@@ -31,7 +34,7 @@ module.exports = (app, passport) => {
     if (req.results) {
       res.status(200).json(req.results);
     } else {
-      res.status(404).json("Something went wrong");
+      res.status(404).json({res: "Something went wrong"});
     }
   });
 
@@ -39,7 +42,7 @@ module.exports = (app, passport) => {
     "/customer/:customerId",
     [basicAuthentication, customer.updateCustomerById],
     (req, res, next) => {
-      res.status(200).json("Customer was updated");
+      res.status(200).json({res: "Customer was updated"});
     }
   );
 
@@ -47,7 +50,7 @@ module.exports = (app, passport) => {
     "/customer/:customerId",
     [basicAuthentication, customer.deleteCustomerById],
     (req, res, next) => {
-      res.status(200).json(`User deleted with Id: ${req.results.id}`);
+      res.status(200).json({res: `User deleted with Id: ${req.results.id}`});
     }
   );
 

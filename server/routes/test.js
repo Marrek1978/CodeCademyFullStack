@@ -13,12 +13,12 @@ module.exports = (app) => {
   //*--- TEST ROUTES --------------------------------
 
   app.get('/', (req, res) => {
-    res.send('Test Route Works!')
+    res.json({test: 'Test Route Works!'})
   });
 
 //test middleware folder structure
   app.get('/testauth', basicAuthentication, (req, res, next) => {
-    res.send(' authed')
+    res.json({authed: true})
   });
 
 };
