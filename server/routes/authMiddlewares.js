@@ -19,7 +19,17 @@ const matchIdAuthentication = (req, res, next) => {
   }
 };
 
+function ensureAuthenticated(req, res, next) {
+  if(req.isAuthenticated()){
+    return next();
+  }
+  res.redirect('/login')
+}
+
+
+
 module.exports = {
   basicAuthentication,
-  matchIdAuthentication
+  matchIdAuthentication,
+  ensureAuthenticated
 }

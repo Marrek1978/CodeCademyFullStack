@@ -10,6 +10,7 @@ module.exports = async (app) => {
   //? -----------  LOAD PASSPORT --------------------------------
   const passportInitialized = passportInitializer(expressInitialized);
   //? -----------  LOAD ROUTES --------------------------------
+  // routesLoader(expressInitialized.app, expressInitialized.passport);
   routesLoader(expressInitialized, passportInitialized);
 
   //!load swagger

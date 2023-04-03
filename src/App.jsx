@@ -42,6 +42,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/customer/:customerId" element={<CustomerProfile />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/auth/github"  />
           </Routes>
           <Footer />
         </Router>

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { loginUser } from "../api/api";
 import { Navigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { GoMarkGithub } from "react-icons/go";
+import { gitAuth } from "../api/api";
+
+const GITHUB_CLIENT_ID="fc259b8c6f0823eee759"
 
 function Login() {
   const {
@@ -21,6 +26,14 @@ function Login() {
   
   };
 
+  const handleGitAuth = async () => {
+
+    // console.log("handleGitAuth",e)
+    // const gitAuthed = await gitAuth();
+     window.location.assign(`https://github.com/login/oauth/authorize?client_id=${GITHUB_CLIENT_ID}`)
+    console.log( 'git authed is ', gitAuthed)
+  }
+
   //redirect to profile page.
   return (
     <>
@@ -28,7 +41,7 @@ function Login() {
       <article className="w-full  px-5 py-10">
         <section className="m-auto max-w-md ">
           <h1>Login</h1>
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-10">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-10 bg-bgFormBlue rounded p-5">
             <div className="w-full">
               <div
                 className="
@@ -101,6 +114,15 @@ function Login() {
               className="bg-key rounded py-3 px-5 text-white font-bold uppercase mt-10"
             />
           </form>
+
+          <div className="
+          mt-10
+          flex w-full justify-around">
+            {/* <div><Link to='/auth/github' ><GoMarkGithub size={32}/></Link></div> */}
+            <div onClick={handleGitAuth} ><GoMarkGithub size={32}/></div>
+            <div>Google</div>
+            <div>Facebook</div>
+          </div>
         </section>
       </article>
     </>

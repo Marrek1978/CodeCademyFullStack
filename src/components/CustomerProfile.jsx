@@ -73,7 +73,7 @@ function CustomerProfile(){
           >
             {isLoading ? spinner : null}
             {/* all products is {allProducts} */}
-            {allProducts?.map((product) => (
+            {/* {allProducts?.map((product) => (
               <div key={product.id}>
                 <ProductCard
                   category={product.category}
@@ -85,7 +85,7 @@ function CustomerProfile(){
                   stock={product.stock}
                 />
               </div>
-            ))}
+            ))} */}
           </div>
         </section>
       </main>

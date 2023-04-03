@@ -1,8 +1,11 @@
 const customer = require("../db/customer.js");
-const { basicAuthentication, matchIdAuthentication} = require('./authMiddlewares')
+const {
+  basicAuthentication,
+  matchIdAuthentication,
+  ensureAuthenticated
+} = require("./authMiddlewares");
 
 module.exports = (app, passport) => {
-
   //* ROUTES
   app.param("customerId", customer.getCustomerId);
 
@@ -13,28 +16,41 @@ module.exports = (app, passport) => {
 
   app.post("/register", customer.registerCustomer, (req, res, next) => {
     // res.status(201).redirect("/login");
-    res.status(201).json({registered: true});
+    res.status(201).json({ registered: true });
     // res.status(201).json({ userCreated: true, userName: req.results.username });
-    
   });
 
   app.get("/login", (req, res, next) => {
-    res.status(200).send({res: "arrived at login page"});
+    res.status(200).send({ res: "arrived at login page" });
   });
 
+  //***********   authentication ************************ */
   app.post(
-    "/login",(req, res, next)=> {console.log('login page rout'), next()},
-    passport.authenticate("local", { failureRedirect: "/customers" }),
-    (req, res) => {
-      res.json({loggedIn: true});
+    "/login",
+    passport.authenticate("local", { failureRedirect: "/customers" })
+  );
+
+
+  app.get("/auth/github", passport.authenticate("github", { scope: ["user"] }));
+
+  app.get(
+    "/auth/github/callback",
+    passport.authenticate("github", {
+      failureRedirect: "/login",
+      // successRedirect: "/customers",
+    }),
+    (req, res, next) => {
+      // const { accessToken } = req.user;
+      console.log('accessToken is', req.isAuthenticated());
     }
   );
 
-  app.get("/customer/:customerId", matchIdAuthentication, (req, res, next) => {
+  //***********   Customers  ************************************************
+  app.get("/customer/:customerId", ensureAuthenticated, (req, res, next) => {
     if (req.results) {
       res.status(200).json(req.results);
     } else {
-      res.status(404).json({res: "Something went wrong"});
+      res.status(404).json({ res: "Something went wrong" });
     }
   });
 
@@ -42,7 +58,7 @@ module.exports = (app, passport) => {
     "/customer/:customerId",
     [basicAuthentication, customer.updateCustomerById],
     (req, res, next) => {
-      res.status(200).json({res: "Customer was updated"});
+      res.status(200).json({ res: "Customer was updated" });
     }
   );
 
@@ -50,19 +66,24 @@ module.exports = (app, passport) => {
     "/customer/:customerId",
     [basicAuthentication, customer.deleteCustomerById],
     (req, res, next) => {
-      res.status(200).json({res: `User deleted with Id: ${req.results.id}`});
+      res.status(200).json({ res: `User deleted with Id: ${req.results.id}` });
     }
   );
 
   app.get("/logout", (req, res) => {
-    req.logout(function (err) {
-      if (err) {
-        return next(err);
-      }
+    // req.logout(function (err) {
+    //   if (err) {
+    //     return next(err);
+    //   }
+    req.logout();
       res.redirect("/login");
-    });
+    // });
   });
-
-  
 };
 
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   res.redirect("/login");
+// }
