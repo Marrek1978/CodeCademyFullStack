@@ -1,14 +1,30 @@
 
-const testRouter = require('./test');
-const customersRouter = require('./customers');
-const productsRouter = require('./products');
-const cartsRouter = require('./carts');
+// const testRouter = require('./noLongerNeeded/x-test');
+// const customersRouter = require('./x-customers');
+// const productsRouter = require('./x-products');
+// const cartsRouter = require('./x-carts');
+// const db = require('../db/x-getAllRows.js');
 
-module.exports = (app, passport) => {
+const customerRoutes = require('./customerRoutes.js');
+const productsRouter = require('./productsRoutes.js');
+const cartRouter = require('./cartRoutes.js');
 
-  testRouter(app);
-  customersRouter(app, passport);
+module.exports = (app) => {
+
+     // //*--- ALL ROWS FROM TABLES --------------------------------
+  //    app.get('/orders', db.getOrders);
+  //    app.get('/payments', db.getPayments);
+  //    app.get('/carts', db.getCarts);
+  //    app.get('/cart-items', db.getCartItems);
+
+
+  // testRouter(app);
+  customerRoutes(app);
   productsRouter(app);
-  cartsRouter(app);
+  cartRouter(app);
+  // cartsRouter(app);
+
+
+ 
 
 };

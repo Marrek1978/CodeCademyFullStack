@@ -1,42 +1,55 @@
-DROP TABLE IF EXISTS customer, product, cart, cart_item, orders, payments;
+DROP TABLE IF EXISTS customer, product, products, cart, cart_item, orders, payments;
 
 CREATE TABLE customer (
   id INTEGER PRIMARY KEY,
-  first_name VARCHAR(50) NOT NULL,
-  last_name VARCHAR(50) NOT NULL,
-  email VARCHAR(50) UNIQUE NOT NULL,
-  address VARCHAR(50),
-  phone VARCHAR(13)
+  username VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(100),
+  email VARCHAR(50) UNIQUE,
+  first_name VARCHAR(50) ,
+  last_name VARCHAR(50),
+   address VARCHAR(50),
+  phone VARCHAR(13),
+  google_id VARCHAR(50),
+  github_id VARCHAR(50),
+  facebook_id VARCHAR(50)
+  
 );
 
-INSERT INTO customer (id, first_name, last_name, email, address, phone )
-VALUES (1, 'Mark', 'Mac', 'mark@gmail.com', '123 1st St', '1111111111'),
-(2, 'John', 'Mac', 'john@gmail.com', '222 2nd St', '2222222222'),
-(3, 'Steve', 'Mac', 'steve@gmail.com', '333 3st St', '(333)333-3333'),
-(4, 'Allen', 'Mac', 'allen@gmail.com', '444 4th St', '(444)444-4444'),
-(5, 'Dave', 'Mac', 'dave@gmail.com', '555 5th St', '(555)555-5555')
+INSERT INTO customer (id, username, password, email, first_name, last_name,  address, phone )
+VALUES (1, 'uermark', 'passmark', 'mark@gmail.com', 'Mark', 'Mac', '123 1st St', '1111111111'),
+(2, 'userjohn', 'passjohn', 'john@gmail.com',  'John', 'Mac', '222 2nd St', '2222222222'),
+(3, 'usersteve', 'passsteve', 'steve@gmail.com',  'Steve', 'Mac', '333 3st St', '(333)333-3333'),
+(4, 'userallen', 'passallen', 'allen@gmail.com', 'Allen', 'Mac', '444 4th St', '(444)444-4444'),
+(5, 'userdave', 'passdave', 'dave@gmail.com', 'Dave', 'Mac', '555 5th St', '(555)555-5555')
 ;
         
 
-CREATE TABLE product (
+CREATE TABLE products (
 	id INTEGER PRIMARY KEY,
   name VARCHAR(50) NOT NULL,
+  category VARCHAR(50),
   description VARCHAR(50),
   price MONEY NOT NULL,
-  stock INTEGER 
+  stock INTEGER ,
+  image_name VARCHAR(50)
 );
 
-INSERT INTO product(id, name, description, price, stock)
-VALUES (1, 'Black Diamond Skis', 'Best Resort Skis', 599, 12),
-(2, 'Volki Skis', 'Best DownHill Skis', 799, 8),
-(3, 'Black Crow Skis', 'Best Back-Country Skis', 1199, 5),
-(4, 'Head Skis', 'Cheapest Resort Skis', 399, 18),
-(5, 'Blizzard Skis', 'Best Powder Skis', 899, 9)
+INSERT INTO products(id, name, category, description, price, stock, image_name)
+VALUES (1, 'Black Diamond Skis', 'skis', 'Best Resort Skis', 599, 12, 'skis_1.png' ),
+(2, 'Volki Skis',  'skis', 'Best DownHill Skis', 799, 8, 'skis_2.png' ),
+(3, 'Black Crow Skis', 'skis',  'Best Back-Country Skis', 1199, 5, 'skis_3.png' ),
+(4, 'Head Skis', 'skis', 'Cheapest Resort Skis', 399, 18, 'skis_4.png' ),
+(5, 'Blizzard Skis', 'skis', 'Best Powder Skis', 899, 9, 'skis_5.png' ),
+(6, 'Tecnica Ski Boots', 'boots', 'Lightest Boot', 499, 9, 'boots_1.jpg'),
+(7, 'Rossignol Ski Boots', 'boots', 'Cheapest Boot', 99, 9, 'boots_2.jpg'),
+(8, 'Dynafit Ski Boots', 'boots', 'Most Comfortable Boot', 299, 5, 'boots_3.jpg'),
+(9, 'Black Diamond Ski Poles', 'poles', 'Best Looking Ski Poles', 99, 4, 'poles_1.png'),
+(10, 'Nordica Ski Poles', 'poles', 'Purplest Ski Poles', 69, 2, 'poles_2.png')
 ;
 
 CREATE TABLE cart (
   id INTEGER PRIMARY KEY,
-  customer_id INTEGER REFERENCES customer(id),
+  customer_id INTEGER REFERENCES customer(id) NOT NULL,
   created_on DATE NOT NULL
 );
 
@@ -48,7 +61,7 @@ VALUES (1, 1, CURRENT_DATE),
 
 CREATE TABLE cart_item(
   cart_id INTEGER REFERENCES cart(id),
-  product_id INTEGER REFERENCES product(id),
+  product_id INTEGER REFERENCES products(id),
   quantity INTEGER NOT NULL,
   product_price MONEY NOT NULL,
   total MONEY NOT NULL,

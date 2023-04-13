@@ -1,4 +1,4 @@
-const { query } = require("../index.js");
+const { query } = require("../x-index.js");
 
 async function getCartById(cartId) {
   const promise = new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-const { query } = require("../index.js");
+const { query } = require("../x-index.js");
 
 const customerObj = (body, result) => {
   const username = body.username ? body.username : result.username;
